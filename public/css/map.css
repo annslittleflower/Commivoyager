@@ -1,0 +1,22 @@
+#map{
+    height: 500px;
+}
+
+body{
+    margin:0;
+    padding: 1px;
+}
+
+.row{
+    width: 100%;
+}
+
+#money{
+    text-align: center;
+    font-size: 18px;
+}
+
+#money span{
+    color: gold;
+    font-size: 22px;
+}

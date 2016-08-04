@@ -1,0 +1,64 @@
+html{
+    height: 100%;
+    padding:0;
+    margin: 0;
+}
+
+.wrapper{
+    min-height: 100%;
+    position: relative;
+    padding: 0;
+    margin:0;
+    padding-bottom: 150px;
+}
+
+a{
+    text-decoration: underline;
+}
+
+.container-fluid , body{
+    height: 100%;
+    padding:0;
+    margin:0;
+}
+
+header {
+    box-sizing: border-box;
+    font-size: 18px;
+}
+
+header #top_bar #links a{
+    margin-left: 150px;
+}
+
+header #bottom_bar{
+    border-bottom: 2px solid orange;
+}
+
+header #bottom_bar a{
+    margin-right: 150px;
+}
+
+header #top_bar{
+    padding-left: 50px;
+    border-bottom: 1px solid green;
+}
+
+header #logo{
+    height: 70px;
+    width:190px;
+}
+
+
+footer{
+    position: absolute;
+    height: 70px;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    text-align: center;
+    background:#ff8041;
+    padding-top: 20px;
+    padding-left: 20px;
+    color:white;
+}

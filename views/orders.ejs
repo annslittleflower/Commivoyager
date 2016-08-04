@@ -1,0 +1,30 @@
+<%- include templates/header %>
+<link rel="stylesheet" href="/css/orders.css">
+
+<% if (orders.length != 0) { %>
+<div class="col-md-offset-2">
+        <form role="form" action="/orders" method="post">
+<% for(var i=0; i<orders.length; i++) {%>
+           <label class="row order-item">
+                <div class="col-md-8">
+                    <div><%= orders[i].goods %></div>
+                    <span id="address"><%= orders[i].address %></span>
+                </div>
+                <div class="checkbox col-md-4">
+                  <input type="checkbox" name="orders[]" value=<%= orders[i]._id %>>Взяти замовлення
+                </div>
+            </label>
+
+<% }; %>
+
+<button type="submit" class="btn btn-success row" id="sbmt">Сформувати маршрут</button>
+    </form>
+</div>
+
+<% }else{ %>
+
+<p class='alert alert-info col-md-offset-4 col-md-6'>Немає замовлень</p>
+
+<% } %>
+
+<%- include templates/footer %>

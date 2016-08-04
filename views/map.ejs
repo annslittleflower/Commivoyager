@@ -1,0 +1,108 @@
+<%- include templates/header %>
+
+<link rel="stylesheet" href="/css/map.css">
+<div id="geo" class="row"></div>
+<div id="money" class="row alert alert-success"></div>
+<div class="row">
+    <div id="map" class="col-md-8"></div>
+    <div id="directions-panel" class="col-md-4"></div>
+</div>
+
+<script type="text/javascript">
+
+
+navigator.geolocation.getCurrentPosition(initMap);
+
+
+function initMap(position) {
+
+
+
+var coords = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+
+    var directionsService = new google.maps.DirectionsService;
+    var directionsDisplay = new google.maps.DirectionsRenderer;
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 10,
+      center: coords
+    });
+
+    directionsDisplay.setMap(map);
+    calculateAndDisplayRoute(directionsService, directionsDisplay, coords);
+};
+
+
+
+
+
+function calculateAndDisplayRoute(directionsService, directionsDisplay, coords){
+
+
+
+
+  var orders = <%- JSON.stringify(orders)%>;
+  var money = 0;
+  var kms = 0;
+
+  var waypts = [];
+    for(var i=0; i<orders.length; i++) {
+      waypts.push({
+      location: orders[i].address, 
+      stopover: true
+      }); 
+      money+=orders[i].reward;
+    };
+
+    
+  directionsService.route
+  (
+                {
+    origin: coords,
+    destination: coords,
+    waypoints: waypts,
+    optimizeWaypoints: true,
+    travelMode: google.maps.TravelMode.WALKING
+                }, 
+        function(response, status)
+          {
+            if (status === google.maps.DirectionsStatus.OK) 
+            {
+              directionsDisplay.setDirections(response);
+              var route = response.routes[0];
+      var summaryPanel = document.getElementById('directions-panel');
+      summaryPanel.innerHTML = '';
+      // For each route, display summary information.
+      for (var i = 0; i < route.legs.length; i++) {
+        var routeSegment = i + 1;
+        summaryPanel.innerHTML += '<b>Сегмент маршруту: ' + routeSegment +
+            '</b><br>';
+        summaryPanel.innerHTML += route.legs[i].start_address + ' до ';
+        summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
+        summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
+
+        if(i!== route.legs.length-1) kms += parseFloat(route.legs[i].distance.text.replace(/\,/g,".").slice(0, -2));
+        
+      }
+      //alert(kms);
+
+      var xxx = kms/5;
+      var hours = Math.floor(xxx);
+      var minutes = (((xxx - hours)) * 60).toFixed(0);
+
+      document.getElementById('money').innerHTML = "Ви заробите <span>" + money + " грн</span>  за " + hours + " год." + minutes + " хв.";
+            }
+            else 
+            {
+            window.alert('Запит не вийшов' + status);
+            }
+          }
+        );
+      };
+
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCCXa_plVMysY58vXNWtPySK6YpOdVaVsU&signed_in=true&callback=initMap"
+        async defer></script>
+
+
+<%- include templates/footer %>
